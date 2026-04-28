@@ -20,21 +20,24 @@ const SEVERITY_STYLE = {
 
 // ── Navbar defined OUTSIDE main component ─────────────
 function Navbar({ user, logout }) {
+  const navigate = useNavigate()
   return (
     <div style={{ backgroundColor: '#1B4F8A', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>
-        🛡 Patch Compliance Reporter
-      </span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>🛡 Patch Compliance Reporter</span>
+        <button onClick={() => navigate('/')}
+          style={{ background: 'rgba(255,255,255,0.3)', color: 'white', border: '1px solid rgba(255,255,255,0.5)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}>
+          📋 Records
+        </button>
+        <button onClick={() => navigate('/dashboard')}
+          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: 'none', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
+          📊 Dashboard
+        </button>
+      </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {user && (
-          <span style={{ color: '#bfdbfe', fontSize: '13px' }}>
-            👤 {user.username}
-          </span>
-        )}
-        <button
-          onClick={logout}
-          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
-        >
+        {user && <span style={{ color: '#bfdbfe', fontSize: '13px' }}>👤 {user.username}</span>}
+        <button onClick={logout}
+          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
           Logout
         </button>
       </div>
