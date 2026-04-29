@@ -13,6 +13,8 @@ const patchService = {
     api.post(`/patch-records/${id}/describe`),
   getAiRecommendation: (id) =>
     api.post(`/patch-records/${id}/recommend`),
+  exportCsv: () =>
+    api.get('/patch-records/export', { responseType: 'blob' }),
 }
 
 export default patchService
