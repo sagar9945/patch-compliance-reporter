@@ -9,6 +9,10 @@ const patchService = {
   remove: (id) => api.delete(`/patch-records/${id}`),
   search: (q) => api.get('/patch-records/search', { params: { q } }),
   getStats: () => api.get('/patch-records/stats'),
+  getAiDescription: (id) =>
+    api.post(`/patch-records/${id}/describe`),
+  getAiRecommendation: (id) =>
+    api.post(`/patch-records/${id}/recommend`),
 }
 
 export default patchService
