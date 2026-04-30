@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -27,27 +26,25 @@ function Navbar({ user, logout, navigate }) {
         <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>
           🛡 Patch Compliance Reporter
         </span>
-        <button
-          onClick={() => navigate('/')}
-          style={{ background: 'rgba(255,255,255,0.3)', color: 'white', border: '1px solid rgba(255,255,255,0.5)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}
-        >
+        <button onClick={() => navigate('/')}
+          style={{ background: 'rgba(255,255,255,0.3)', color: 'white', border: '1px solid rgba(255,255,255,0.5)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}>
           📋 Records
         </button>
-        <button
-          onClick={() => navigate('/dashboard')}
-          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: 'none', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
-        >
+        <button onClick={() => navigate('/dashboard')}
+          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: 'none', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
           📊 Dashboard
+        </button>
+        <button onClick={() => navigate('/analytics')}
+          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: 'none', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
+          📈 Analytics
         </button>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {user && (
           <span style={{ color: '#bfdbfe', fontSize: '13px' }}>👤 {user.username}</span>
         )}
-        <button
-          onClick={logout}
-          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
-        >
+        <button onClick={logout}
+          style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
           Logout
         </button>
       </div>
@@ -169,10 +166,8 @@ export default function PatchListPage() {
         <Navbar user={user} logout={logout} navigate={navigate} />
         <div style={{ textAlign: 'center', marginTop: '80px' }}>
           <p style={{ color: '#dc2626', fontSize: '15px', marginBottom: '12px' }}>{error}</p>
-          <button
-            onClick={() => setPage(0)}
-            style={{ backgroundColor: '#1B4F8A', color: 'white', padding: '8px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}
-          >
+          <button onClick={() => setPage(0)}
+            style={{ backgroundColor: '#1B4F8A', color: 'white', padding: '8px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}>
             Retry
           </button>
         </div>
@@ -192,10 +187,8 @@ export default function PatchListPage() {
           <p style={{ color: '#9ca3af', marginBottom: '24px' }}>
             Create your first record to get started.
           </p>
-          <button
-            onClick={() => navigate('/patch/new')}
-            style={{ backgroundColor: '#1B4F8A', color: 'white', padding: '10px 24px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600' }}
-          >
+          <button onClick={() => navigate('/patch/new')}
+            style={{ backgroundColor: '#1B4F8A', color: 'white', padding: '10px 24px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600' }}>
             + New Record
           </button>
         </div>
@@ -210,7 +203,7 @@ export default function PatchListPage() {
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 16px' }}>
 
-        {/* ── Header row ── */}
+        {/* ── Header ── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', margin: 0 }}>
             Patch Compliance Records
@@ -223,10 +216,8 @@ export default function PatchListPage() {
             >
               {exporting ? 'Exporting…' : '⬇ Export CSV'}
             </button>
-            <button
-              onClick={() => navigate('/patch/new')}
-              style={{ backgroundColor: '#1B4F8A', color: 'white', padding: '9px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '14px' }}
-            >
+            <button onClick={() => navigate('/patch/new')}
+              style={{ backgroundColor: '#1B4F8A', color: 'white', padding: '9px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '14px' }}>
               + New Record
             </button>
           </div>
@@ -236,11 +227,8 @@ export default function PatchListPage() {
         <div style={{ background: 'white', borderRadius: '10px', padding: '16px 20px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
 
-            {/* Search */}
             <div style={{ flex: 2, minWidth: '200px' }}>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>
-                Search
-              </label>
+              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>Search</label>
               <input
                 type="text"
                 placeholder="Asset name, patch ID, title..."
@@ -250,11 +238,8 @@ export default function PatchListPage() {
               />
             </div>
 
-            {/* Status dropdown */}
             <div style={{ flex: 1, minWidth: '150px' }}>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>
-                Status
-              </label>
+              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>Status</label>
               <select
                 value={statusFilter}
                 onChange={e => { setStatusFilter(e.target.value); setPage(0) }}
@@ -268,46 +253,32 @@ export default function PatchListPage() {
               </select>
             </div>
 
-            {/* Date From */}
             <div style={{ flex: 1, minWidth: '140px' }}>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>
-                Deadline From
-              </label>
-              <input
-                type="date"
-                value={dateFrom}
+              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>Deadline From</label>
+              <input type="date" value={dateFrom}
                 onChange={e => { setDateFrom(e.target.value); setPage(0) }}
                 style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '7px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               />
             </div>
 
-            {/* Date To */}
             <div style={{ flex: 1, minWidth: '140px' }}>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>
-                Deadline To
-              </label>
-              <input
-                type="date"
-                value={dateTo}
+              <label style={{ display: 'block', fontSize: '11px', fontWeight: '600', color: '#6b7280', marginBottom: '5px', textTransform: 'uppercase' }}>Deadline To</label>
+              <input type="date" value={dateTo}
                 onChange={e => { setDateTo(e.target.value); setPage(0) }}
                 style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '7px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               />
             </div>
 
-            {/* Clear filters */}
             {hasFilters && (
               <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <button
-                  onClick={clearFilters}
-                  style={{ padding: '8px 16px', background: '#fee2e2', color: '#991b1b', border: 'none', borderRadius: '7px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}
-                >
+                <button onClick={clearFilters}
+                  style={{ padding: '8px 16px', background: '#fee2e2', color: '#991b1b', border: 'none', borderRadius: '7px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}>
                   ✕ Clear
                 </button>
               </div>
             )}
           </div>
 
-          {/* Filter summary */}
           {hasFilters && (
             <div style={{ marginTop: '10px', fontSize: '12px', color: '#6b7280' }}>
               Showing <strong>{filtered.length}</strong> of <strong>{records.length}</strong> records
@@ -322,13 +293,9 @@ export default function PatchListPage() {
         {/* ── No results ── */}
         {filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '40px', background: 'white', borderRadius: '10px' }}>
-            <p style={{ color: '#6b7280', fontSize: '15px', marginBottom: '12px' }}>
-              No records match your filters
-            </p>
-            <button
-              onClick={clearFilters}
-              style={{ background: 'none', border: '1px solid #d1d5db', padding: '6px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
-            >
+            <p style={{ color: '#6b7280', fontSize: '15px', marginBottom: '12px' }}>No records match your filters</p>
+            <button onClick={clearFilters}
+              style={{ background: 'none', border: '1px solid #d1d5db', padding: '6px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}>
               Clear all filters
             </button>
           </div>
@@ -349,8 +316,7 @@ export default function PatchListPage() {
               </thead>
               <tbody>
                 {filtered.map((r, i) => (
-                  <tr
-                    key={r.id}
+                  <tr key={r.id}
                     style={{ borderBottom: '1px solid #f3f4f6', background: i % 2 === 0 ? 'white' : '#fafafa' }}
                     onMouseEnter={e => { e.currentTarget.style.background = '#eff6ff' }}
                     onMouseLeave={e => { e.currentTarget.style.background = i % 2 === 0 ? 'white' : '#fafafa' }}
@@ -358,14 +324,10 @@ export default function PatchListPage() {
                     <td style={{ padding: '14px 16px', fontWeight: '600', color: '#111827' }}>
                       {r.assetName}
                       {r.assetIp && (
-                        <div style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'monospace', marginTop: '2px' }}>
-                          {r.assetIp}
-                        </div>
+                        <div style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'monospace', marginTop: '2px' }}>{r.assetIp}</div>
                       )}
                     </td>
-                    <td style={{ padding: '14px 16px', fontFamily: 'monospace', fontSize: '12px', color: '#4b5563' }}>
-                      {r.patchId}
-                    </td>
+                    <td style={{ padding: '14px 16px', fontFamily: 'monospace', fontSize: '12px', color: '#4b5563' }}>{r.patchId}</td>
                     <td style={{ padding: '14px 16px' }}>
                       <span style={{ ...(SEVERITY_STYLE[r.severity] ?? {}), padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '700' }}>
                         {r.severity}
@@ -384,21 +346,15 @@ export default function PatchListPage() {
                         : <span style={{ color: '#9ca3af' }}>—</span>
                       }
                     </td>
-                    <td style={{ padding: '14px 16px', color: '#6b7280', fontSize: '13px' }}>
-                      {r.patchDeadline ?? '—'}
-                    </td>
+                    <td style={{ padding: '14px 16px', color: '#6b7280', fontSize: '13px' }}>{r.patchDeadline ?? '—'}</td>
                     <td style={{ padding: '14px 16px' }}>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        <button
-                          onClick={() => navigate(`/patch/${r.id}`)}
-                          style={{ color: '#1B4F8A', background: 'none', border: '1px solid #1B4F8A', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}
-                        >
+                        <button onClick={() => navigate(`/patch/${r.id}`)}
+                          style={{ color: '#1B4F8A', background: 'none', border: '1px solid #1B4F8A', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}>
                           View
                         </button>
-                        <button
-                          onClick={() => navigate(`/patch/${r.id}/edit`)}
-                          style={{ color: '#374151', background: 'none', border: '1px solid #d1d5db', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}
-                        >
+                        <button onClick={() => navigate(`/patch/${r.id}/edit`)}
+                          style={{ color: '#374151', background: 'none', border: '1px solid #d1d5db', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}>
                           Edit
                         </button>
                       </div>
@@ -413,21 +369,13 @@ export default function PatchListPage() {
         {/* ── Pagination ── */}
         {totalPages > 1 && (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '20px' }}>
-            <button
-              onClick={() => setPage(p => Math.max(p - 1, 0))}
-              disabled={page === 0}
-              style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid #d1d5db', background: 'white', cursor: page === 0 ? 'not-allowed' : 'pointer', opacity: page === 0 ? 0.4 : 1 }}
-            >
+            <button onClick={() => setPage(p => Math.max(p - 1, 0))} disabled={page === 0}
+              style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid #d1d5db', background: 'white', cursor: page === 0 ? 'not-allowed' : 'pointer', opacity: page === 0 ? 0.4 : 1 }}>
               ← Prev
             </button>
-            <span style={{ fontSize: '14px', color: '#6b7280' }}>
-              Page {page + 1} of {totalPages}
-            </span>
-            <button
-              onClick={() => setPage(p => Math.min(p + 1, totalPages - 1))}
-              disabled={page >= totalPages - 1}
-              style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid #d1d5db', background: 'white', cursor: page >= totalPages - 1 ? 'not-allowed' : 'pointer', opacity: page >= totalPages - 1 ? 0.4 : 1 }}
-            >
+            <span style={{ fontSize: '14px', color: '#6b7280' }}>Page {page + 1} of {totalPages}</span>
+            <button onClick={() => setPage(p => Math.min(p + 1, totalPages - 1))} disabled={page >= totalPages - 1}
+              style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid #d1d5db', background: 'white', cursor: page >= totalPages - 1 ? 'not-allowed' : 'pointer', opacity: page >= totalPages - 1 ? 0.4 : 1 }}>
               Next →
             </button>
           </div>
