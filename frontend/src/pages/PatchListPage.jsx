@@ -112,17 +112,29 @@ export default function PatchListPage() {
   }
 
   if (loading) {
-    return (
-      <>
-        <Navbar activePage="records" />
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '300px', gap: '16px' }}>
-          <div style={{ width: '40px', height: '40px', border: '4px solid #e5e7eb', borderTopColor: '#1B4F8A', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-          <p style={{ color: '#6b7280', fontSize: '14px' }}>Loading patch records…</p>
-          <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+  return (
+    <>
+      <Navbar activePage="records" />
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: isMobile ? '16px' : '32px 16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ height: '28px', width: '260px', background: '#e5e7eb', borderRadius: '6px', animation: 'pulse 1.5s ease-in-out infinite' }} />
+          <div style={{ height: '36px', width: '120px', background: '#e5e7eb', borderRadius: '6px', animation: 'pulse 1.5s ease-in-out infinite' }} />
         </div>
-      </>
-    )
-  }
+        <div style={{ background: 'white', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 1px 6px rgba(0,0,0,0.08)' }}>
+          {[...Array(5)].map((_, i) => (
+            <div key={i} style={{ display: 'flex', gap: '16px', padding: '16px', borderBottom: '1px solid #f3f4f6' }}>
+              <div style={{ height: '16px', flex: 2, background: '#e5e7eb', borderRadius: '4px', animation: 'pulse 1.5s ease-in-out infinite' }} />
+              <div style={{ height: '16px', flex: 1, background: '#e5e7eb', borderRadius: '4px', animation: 'pulse 1.5s ease-in-out infinite' }} />
+              <div style={{ height: '16px', flex: 1, background: '#e5e7eb', borderRadius: '4px', animation: 'pulse 1.5s ease-in-out infinite' }} />
+              <div style={{ height: '16px', flex: 1, background: '#e5e7eb', borderRadius: '4px', animation: 'pulse 1.5s ease-in-out infinite' }} />
+            </div>
+          ))}
+        </div>
+        <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`}</style>
+      </div>
+    </>
+  )
+}
 
   if (error) {
     return (
