@@ -12,6 +12,3 @@ spring:
   flyway:
     enabled: false   # Disable Flyway for tests — JPA creates tables
 
-jwt:
-  secret: test-secret-key-minimum-256-bits-long-for-testing-purposes-only
-  expiration-ms: 86400000

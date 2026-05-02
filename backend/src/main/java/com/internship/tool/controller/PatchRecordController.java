@@ -1,5 +1,6 @@
 package com.internship.tool.controller;
 
+import com.internship.tool.entity.PatchRecord;
 import com.internship.tool.service.PatchRecordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,168 +18,124 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/patch-records")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
-@Tag(name = "Patch Records", description = "CRUD operations for patch compliance records")
+@Tag(name = "Patch Records", description = "CRUD for patch compliance records")
+@CrossOrigin(origins = "*")
 public class PatchRecordController {
 
-    private final PatchRecordService patchRecordService;
+    private final PatchRecordService service;
 
-    // ── GET /api/patch-records ────────────────────────
     @GetMapping
-    @Operation(summary = "Get all patch records",
-               description = "Returns paginated list of all patch compliance records")
+    @Operation(summary = "Get all patch records (paginated)")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Records retrieved successfully"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized — JWT token required")
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    public ResponseEntity<Page<?>> getAll(
-            @Parameter(description = "Page number (0-based)") @RequestParam(defaultValue = "0") int page,
-            @Parameter(description = "Page size")             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(patchRecordService.getAll(PageRequest.of(page, size)));
+    public ResponseEntity<Page<PatchRecord>> getAll(
+            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(service.getAll(PageRequest.of(page, size)));
     }
 
-    // ── GET /api/patch-records/{id} ───────────────────
     @GetMapping("/{id}")
     @Operation(summary = "Get patch record by ID")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Record found"),
-        @ApiResponse(responseCode = "404", description = "Record not found"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+        @ApiResponse(responseCode = "200", description = "Found"),
+        @ApiResponse(responseCode = "404", description = "Not found")
     })
-    public ResponseEntity<?> getById(
+    public ResponseEntity<PatchRecord> getById(
             @Parameter(description = "Record ID") @PathVariable Long id) {
-        return ResponseEntity.ok(patchRecordService.getById(id));
+        return ResponseEntity.ok(service.getById(id));
     }
 
-    // ── POST /api/patch-records ───────────────────────
     @PostMapping
-    @Operation(summary = "Create a new patch record")
+    @Operation(summary = "Create new patch record")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Record created successfully"),
-        @ApiResponse(responseCode = "400", description = "Validation failed — check required fields"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+        @ApiResponse(responseCode = "201", description = "Created"),
+        @ApiResponse(responseCode = "400", description = "Bad request")
     })
-        public ResponseEntity<?> create(
-            @RequestBody Object request) {       
-             return ResponseEntity.status(HttpStatus.CREATED)
-                .body(patchRecordService.create(request));
+    public ResponseEntity<PatchRecord> create(
+            @RequestBody Map<String, Object> request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.create(request));
     }
 
-    // ── PUT /api/patch-records/{id} ───────────────────
     @PutMapping("/{id}")
-    @Operation(summary = "Update an existing patch record")
+    @Operation(summary = "Update patch record")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Record updated successfully"),
-        @ApiResponse(responseCode = "404", description = "Record not found"),
-        @ApiResponse(responseCode = "400", description = "Validation failed"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+        @ApiResponse(responseCode = "200", description = "Updated"),
+        @ApiResponse(responseCode = "404", description = "Not found")
     })
-    public ResponseEntity<?> update(
-            @Parameter(description = "Record ID") @PathVariable Long id,
-            @Valid @RequestBody Object request) {
-        return ResponseEntity.ok(patchRecordService.update(id, request));
+    public ResponseEntity<PatchRecord> update(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> request) {
+        return ResponseEntity.ok(service.update(id, request));
     }
 
-    // ── DELETE /api/patch-records/{id} ────────────────
     @DeleteMapping("/{id}")
-    @Operation(summary = "Soft delete a patch record",
-               description = "Sets record status to EXEMPT — does not permanently delete")
-    @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Record deleted successfully"),
-        @ApiResponse(responseCode = "404", description = "Record not found"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    public ResponseEntity<Void> delete(
-            @Parameter(description = "Record ID") @PathVariable Long id) {
-        patchRecordService.delete(id);
+    @Operation(summary = "Soft delete (sets status to EXEMPT)")
+    @ApiResponse(responseCode = "204", description = "Deleted")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    // ── GET /api/patch-records/search ─────────────────
     @GetMapping("/search")
-    @Operation(summary = "Search patch records",
-               description = "Search by asset name or patch ID")
-    @ApiResponse(responseCode = "200", description = "Search results returned")
-    public ResponseEntity<?> search(
+    @Operation(summary = "Search records by asset name, patch ID or title")
+    public ResponseEntity<List<PatchRecord>> search(
             @Parameter(description = "Search term") @RequestParam String q) {
-        return ResponseEntity.ok(patchRecordService.search(q));
+        return ResponseEntity.ok(service.search(q));
     }
 
-    // ── GET /api/patch-records/stats ──────────────────
     @GetMapping("/stats")
-    @Operation(summary = "Get dashboard statistics",
-               description = "Returns total, compliant, non-compliant counts and average score")
-    @ApiResponse(responseCode = "200", description = "Stats returned successfully")
-    public ResponseEntity<?> getStats() {
-        return ResponseEntity.ok(patchRecordService.getStats());
+    @Operation(summary = "Dashboard statistics")
+    public ResponseEntity<Map<String, Object>> getStats() {
+        return ResponseEntity.ok(service.getStats());
     }
 
-    // ── GET /api/patch-records/export ─────────────────
     @GetMapping("/export")
-    @Operation(summary = "Export all records as CSV",
-               description = "Downloads all patch records as a CSV file")
-    @ApiResponse(responseCode = "200", description = "CSV file downloaded successfully")
+    @Operation(summary = "Export all records as CSV")
     public ResponseEntity<byte[]> exportCsv() {
-        byte[] csvBytes = patchRecordService.exportToCsv();
+        byte[] csv = service.exportToCsv();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"patch-records.csv\"")
                 .contentType(MediaType.parseMediaType("text/csv"))
-                .body(csvBytes);
+                .body(csv);
     }
 
-    // ── POST /api/patch-records/upload ────────────────
     @PostMapping("/upload")
-    @Operation(summary = "Upload a file attachment for a patch record",
-               description = "Accepts PDF, PNG, JPG only. Max size 5MB.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "File uploaded successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid file type or size exceeded"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
+    @Operation(summary = "Upload file attachment (PDF/PNG/JPG max 5MB)")
     public ResponseEntity<Map<String, String>> upload(
-            @Parameter(description = "File to upload (PDF/PNG/JPG, max 5MB)")
             @RequestParam("file") MultipartFile file) {
 
-        // ── Validation ────────────────────────────────
-        if (file.isEmpty()) {
+        if (file.isEmpty())
             return ResponseEntity.badRequest()
                     .body(Map.of("error", "File is empty"));
-        }
 
-        // Size validation — max 5MB
-        long maxSize = 5 * 1024 * 1024L;
-        if (file.getSize() > maxSize) {
+        if (file.getSize() > 5L * 1024 * 1024)
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", "File size exceeds 5MB limit. Actual size: "
-                            + (file.getSize() / 1024 / 1024) + "MB"));
-        }
+                    .body(Map.of("error", "File exceeds 5MB limit"));
 
-        // Type validation — only PDF, PNG, JPG
-        String contentType = file.getContentType();
-        if (contentType == null ||
-                (!contentType.equals("application/pdf") &&
-                 !contentType.equals("image/png") &&
-                 !contentType.equals("image/jpeg"))) {
+        String ct = file.getContentType();
+        if (ct == null || (!ct.equals("application/pdf") &&
+                           !ct.equals("image/png") &&
+                           !ct.equals("image/jpeg")))
             return ResponseEntity.badRequest()
-                    .body(Map.of("error",
-                            "Invalid file type: " + contentType +
-                            ". Allowed types: PDF, PNG, JPG"));
-        }
+                    .body(Map.of("error", "Invalid type. Allowed: PDF, PNG, JPG"));
 
-        // ── Save file ─────────────────────────────────
-        String savedName = patchRecordService.saveFile(file);
-
+        String saved = service.saveFile(file);
         return ResponseEntity.ok(Map.of(
-                "message",  "File uploaded successfully",
-                "filename", savedName,
+                "message",  "Uploaded successfully",
+                "filename", saved,
                 "size",     file.getSize() + " bytes",
-                "type",     contentType
+                "type",     ct
         ));
     }
 }
