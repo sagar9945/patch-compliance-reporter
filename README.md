@@ -177,6 +177,12 @@ Full interactive docs: **http://localhost:8080/swagger-ui.html**
 | Day 10 | DataSeeder 15 records, Analytics page | Data + Charts |
 | Day 11 | Responsive design 375/768/1280px | Mobile support |
 | Day 12 | Code review, standards, release v1.0 | Final cleanup |
+| Day 13 | Demo video, demo script, demo mode data | Recorded |
+| Day 14 | Loading skeleton, 404 page, 3 presentation slides | Polish |
+| Day 15 | Full backend wired, entity/repo/service, data seeder | Backend |
+| Day 16 | Demo scenarios, portfolio screenshots | Prep |
+| Day 17 | SECURITY.md draft, rehearsal checklist, Q&A prep | Security |
+| Day 18 | Final SECURITY.md, code audit, feature verification | Final |
 
 ---
 
