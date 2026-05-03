@@ -9,11 +9,12 @@ export default function Navbar({ activePage }) {
   const { isMobile }   = useWindowSize()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const navLinks = [
-    { label: '📋 Records',   path: '/',          key: 'records'   },
-    { label: '📊 Dashboard', path: '/dashboard',  key: 'dashboard' },
-    { label: '📈 Analytics', path: '/analytics',  key: 'analytics' },
-  ]
+ const navLinks = [
+  { label: '📋 Records',   path: '/',          key: 'records'   },
+  { label: '📊 Dashboard', path: '/dashboard',  key: 'dashboard' },
+  { label: '📈 Analytics', path: '/analytics',  key: 'analytics' },
+  { label: '🔒 Security',  path: '/security',   key: 'security'  },
+]
 
   return (
     <nav style={{ backgroundColor: '#1B4F8A', position: 'sticky', top: 0, zIndex: 100 }}>
