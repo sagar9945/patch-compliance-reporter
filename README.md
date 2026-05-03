@@ -1,6 +1,6 @@
 # Tool-96 — Patch Compliance Reporter
 
-> **Capstone Project** | Sprint: Mon 14 Apr – Fri 9 May 2026 | Demo Day: 9 May 2026  
+> **Capstone Project** | Sprint: Mon 14 Apr – Fri 9 May 2026 | Demo Day: 9 May 2026
 > Team: 5 Members | Java Developer 2: Sagar M D
 
 ---
@@ -30,37 +30,90 @@ An AI-powered web application that tracks software patch compliance across IT as
 
 ---
 
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│                 Browser (Port 3000)                  │
+│            React 18 + Vite + Tailwind CSS            │
+└─────────────────────┬───────────────────────────────┘
+                      │ Axios (JWT Bearer token)
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│            Spring Boot 3.x (Port 8080)               │
+│   Controllers → Services → Repositories              │
+│   JWT Auth │ Spring AOP Audit │ Redis Cache          │
+└──────┬──────────────┬──────────────────┬────────────┘
+       │              │                  │
+       ▼              ▼                  ▼
+┌────────────┐  ┌──────────┐  ┌─────────────────────┐
+│ PostgreSQL │  │  Redis 7 │  │ Flask AI (Port 5000) │
+│     15     │  │  Cache   │  │ Groq LLaMA-3.3-70b   │
+└────────────┘  └──────────┘  └─────────────────────┘
+```
+
+---
+
 ## Getting Started
 
 ### Prerequisites
-- Docker Desktop installed and running
-- Java 17 (from adoptium.net)
-- Node 18+
-- Python 3.11
+
+| Tool | Version | Check |
+|------|---------|-------|
+| Docker Desktop | 24.x+ | `docker --version` |
+| Docker Compose | 2.x+ | `docker compose version` |
+| Java | 17 | `java -version` |
+| Node.js | 18+ | `node --version` |
+| Python | 3.11 | `python --version` |
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/sagar9945/patch-compliance-reporter.git
 cd patch-compliance-reporter
 ```
 
 ### 2. Set up environment variables
+
 ```bash
 cp .env.example .env
-# Edit .env — add your GROQ_API_KEY
+# Edit .env — add your GROQ_API_KEY and other required values
+```
+
+Required values in `.env`:
+```env
+SPRING_DATASOURCE_PASSWORD=your_password_here
+JWT_SECRET=your_64_char_hex_string
+GROQ_API_KEY=your_key_from_console.groq.com
+```
+
+Generate JWT secret:
+```bash
+# Mac/Linux
+openssl rand -hex 64
+
+# Windows PowerShell
+-join ((1..64) | ForEach-Object { '{0:x}' -f (Get-Random -Max 16) })
 ```
 
 ### 3. Run everything with Docker Compose
+
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 | Service | URL |
 |---|---|
-| Frontend | http://localhost |
+| Frontend | http://localhost:3000 |
 | Backend API | http://localhost:8080 |
 | Swagger UI | http://localhost:8080/swagger-ui.html |
 | AI Service | http://localhost:5000 |
+
+**Default login:**
+```
+Username: admin
+Password: admin123
+```
 
 ### 4. Run locally (without Docker)
 
@@ -81,6 +134,8 @@ npm run dev
 ---
 
 ## Project Structure
+
+```
 patch-compliance-reporter/
 ├── backend/
 │   └── src/main/java/com/internship/tool/
@@ -102,7 +157,10 @@ patch-compliance-reporter/
 │       └── services/       # Axios API calls
 ├── docker-compose.yml
 ├── .env.example
+├── SECURITY.md
+├── DEMO_SCENARIOS.md
 └── README.md
+```
 
 ---
 
@@ -116,6 +174,7 @@ patch-compliance-reporter/
 | PUT | /api/patch-records/{id} | Update record |
 | DELETE | /api/patch-records/{id} | Soft delete |
 | GET | /api/patch-records/search | Search records |
+| GET | /api/patch-records/filter | Filter by status/severity |
 | GET | /api/patch-records/stats | Dashboard statistics |
 | GET | /api/patch-records/export | Export as CSV |
 | POST | /api/patch-records/upload | Upload file (PDF/PNG/JPG, max 5MB) |
@@ -158,6 +217,45 @@ Full interactive docs: **http://localhost:8080/swagger-ui.html**
 - SQL injection protection via JPA
 - File upload validation (type + size)
 - Audit logging via Spring AOP
+- Rate limiting on AI endpoints (30 req/min)
+- CORS restricted to frontend origin only
+
+See [SECURITY.md](./SECURITY.md) for full threat model and findings.
+
+---
+
+## Common Commands
+
+```bash
+# Start everything
+docker compose up --build
+
+# Stop everything
+docker compose down
+
+# Full reset (wipe DB and rebuild)
+docker compose down -v && docker compose up --build
+
+# View logs
+docker compose logs backend --follow
+docker compose logs ai-service --follow
+
+# Check service status
+docker compose ps
+```
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| "Cannot connect to server" | Backend not running — run `docker compose up` |
+| "Container name already in use" | Run `docker compose down` then `docker compose up --build` |
+| "Docker daemon not running" | Open Docker Desktop and wait for it to start |
+| AI service returns 500 | Check `GROQ_API_KEY` in `.env` |
+| Port 3000 already in use | Stop other apps using port 3000 |
+| Blank page on frontend | Hard refresh with `Ctrl+Shift+R` |
 
 ---
 
@@ -183,10 +281,16 @@ Full interactive docs: **http://localhost:8080/swagger-ui.html**
 | Day 16 | Demo scenarios, portfolio screenshots | Prep |
 | Day 17 | SECURITY.md draft, rehearsal checklist, Q&A prep | Security |
 | Day 18 | Final SECURITY.md, code audit, feature verification | Final |
+| Day 19 | Final rehearsal, hotfix, demo ready | Demo prep |
+| Day 20 | Demo Day — full stack presented live | 🎉 Complete |
 
 ---
 
 ## Developer
 
-**Java Developer 2 — Sagar M D**  
+**Java Developer 2 — Sagar M D**
 GitHub: [@sagar9945](https://github.com/sagar9945)
+
+---
+
+*Tool-96 — Patch Compliance Reporter | Capstone Project | Sprint: 14 April – 9 May 2026*
